@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+		<title>Converter</title>
+		<link rel="stylesheet" href="styles.css"/>
+	</head>
+	<body>
+		<h1>Converter</h1>
+		<table>
+			<tr>
+				<td>
+					<fieldset>
+						<legend>Quantity:</legend>
+						<p>
+							<input type="radio" name="quantity" id="info" value="info">
+							<label for="info">Information</label>
+						</p>
+						<p>
+							<input type="radio" name="quantity" id="length" value="length">
+							<label for="length">Length</label> 
+						</p>
+						<p>
+							<input type="radio" name="quantity" id="temp" value="temp">
+							<label for="temp">Temperature</label>
+						</p>
+					</fieldset>
+				</td>
+				<td>
+					<table>
+						<tr>
+							<td id="input-box">
+								<label for="input">Input:</label>
+								<input type="text" id="input" required>
+							</td>
+						</tr>
+					</table>
+					<br/>
+					<table>
+						<tr>
+							<td>
+								<label for="input-prefix">Input prefix:</label>
+								<select id="input-prefix">
+									<option value='none'>none (10⁰)</option>
+								</select>
+							</td>
+							<td>
+								<label for="input-unit">Input unit:</label>
+								<select id="input-unit">
+									<option value="select">Select</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label for="output-prefix">Output prefix:</label>
+								<select id="output-prefix">
+									<option value='none'>none (10⁰)</option>
+								</select>
+							</td>
+							<td>
+								<label for="output-unit">Output unit:</label>
+								<select id="output-unit">
+									<option value="select">Select</option>
+								</select>
+							</td>
+						</tr>
+					</table>
+					<br/>
+					<table>
+						<tr>
+							<td>
+								<button type="submit" id="convert">Convert</button>
+								<button type="submit" id="reverse">Reverse units</button>
+								<button type="reset" id="clear">Clear</button>
+							</td>
+						</tr>
+						<tr>
+							<td id="input-box">
+								<label for="output">Output:</label>
+								<input type="text" id="output" readonly>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+		<script src="script.js"></script>
+	</body>
+</html>
