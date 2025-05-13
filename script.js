@@ -58,9 +58,35 @@ function unitConvert(input, input_prefix, input_unit, output_prefix, output_unit
 		"mi-m": 1609.344,
 		// mass
 		"g-lb": 1/453.59237,
+		"g-long tons": 1/1016046.9088,
 		"g-oz": 1/28.349523125,
+		"g-short tons": 1/907184.74,
+		"g-t": 1/1000,
 		"lb-g": 453.59237,
+		"lb-long tons": 1/2240,
+		"lb-oz": 16,
+		"lb-short tons": 1/2000,
+		"lb-t": 0.00045359237,
+		"long tons-g": 1016046.9088,
+		"long tons-lb": 2240,
+		"long tons-oz": 35840,
+		"long tons-short tons": 1.12,
+		"long tons-t": 1.0160469088,
 		"oz-g": 28.349523125,
+		"oz-lb": 1/16,
+		"oz-long tons": 1/35840,
+		"oz-short tons": 1/32000,
+		"oz-t": 0.000028349523125,
+		"short tons-lb": 2000,
+		"short tons-long tons": 1/1.12,
+		"short tons-g": 907184.74,
+		"short tons-oz": 32000,
+		"short tons-t": 0.90718474,
+		"t-g": 1000,
+		"t-lb": 1/0.00045359237,
+		"t-long tons": 1/1.0160469088,
+		"t-oz": 1/0.000028349523125,
+		"t-short tons": 1/0.90718474,
 	}
 
 	if(input_prefix === output_prefix && input_unit === output_unit) { // if input and output prefixes and units are equal
@@ -74,6 +100,15 @@ function unitConvert(input, input_prefix, input_unit, output_prefix, output_unit
 	}
 
 	return output
+}
+
+// returns singular
+function singular(output_unit) {
+	const units={
+		"long tons": "long ton",
+		"short tons": "short ton",
+	}
+	return units[output_unit]
 }
 
 // select quantity
@@ -124,11 +159,11 @@ document.getElementsByName("quantity").forEach((radio) => {
 		// mass units
 		const mass=`
 			<option value="select">select</option>
-			<option value="lgt">long tons</option>
+			<option value="long tons">long tons</option>
 			<option value="g">grams (g)</option>
 			<option value="lb">pounds (lb)</option>
 			<option value="oz">ounces (oz)</option>
-			<option value="sht">short tons</option>
+			<option value="short tons">short tons</option>
 			<option value="t">tonnes (t)</option>
 		`
 		// temperature units
@@ -138,7 +173,7 @@ document.getElementsByName("quantity").forEach((radio) => {
 			<option value="fahrenheit">Fahrenheit (F)</option>
 			<option value="kelvin">Kelvin (K)</option>
 		`
-		if(quantity=="info") {
+		if(quantity === "info") {
 			input_prefix.innerHTML=binary
 			output_prefix.innerHTML=binary
 			input_prefix.value="none"
@@ -146,7 +181,7 @@ document.getElementsByName("quantity").forEach((radio) => {
 			input_unit.innerHTML=info
 			output_unit.innerHTML=info
 		}
-		else if(quantity=="length") {
+		else if(quantity === "length") {
 			input_prefix.innerHTML=decimal
 			output_prefix.innerHTML=decimal
 			input_prefix.value="none"
@@ -154,7 +189,7 @@ document.getElementsByName("quantity").forEach((radio) => {
 			input_unit.innerHTML=length
 			output_unit.innerHTML=length
 		}
-		else if(quantity=="mass") {
+		else if(quantity === "mass") {
 			input_prefix.innerHTML=decimal
 			output_prefix.innerHTML=decimal
 			input_prefix.value="none"
@@ -162,7 +197,7 @@ document.getElementsByName("quantity").forEach((radio) => {
 			input_unit.innerHTML=mass
 			output_unit.innerHTML=mass
 		}
-		else if(quantity=="temp") {
+		else if(quantity === "temp") {
 			input_prefix.innerHTML=decimal
 			output_prefix.innerHTML=decimal
 			input_prefix.value="none"
@@ -235,6 +270,9 @@ document.getElementById("convert").addEventListener("click", function() {
 		document.getElementById("output").innerHTML=`Output: ${output} ${output_unit}`
 	}
 	else { // otherwise
+		if(output === 1) {
+			singular(output_unit)
+		}
 		document.getElementById("output").innerHTML=`Output: ${output} ${output_prefix}${output_unit}`
 	}
 
