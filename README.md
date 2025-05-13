@@ -12,4 +12,4 @@ A unit conversion tool supporting
 
 Great for everyday use and understanding how different units relate to each other.
 
-![Converter Light Mode](./converter_dark_mode.png)
+![Converter Light Mode](./converter_light_mode.png)
