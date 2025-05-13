@@ -26,7 +26,7 @@ function prefixNumber(prefix) {
 		"n": 10**(-9),
 	}
 
-	if(quantity==binary) {
+	if(quantity === "info") {
 		return binary[prefix]
 	}
 	else {
@@ -51,24 +51,26 @@ function unitConvert(input, input_prefix, input_unit, output_prefix, output_unit
 		"nib-b": 4,
 		// length
 		"ft-m": 0.3048,
-		"mi-m": 1609.344,
 		"in-m": 0.0254,
 		"m-ft": 1/0.3048,
 		"m-mi": 1/1609.344,
 		"m-in": 1/0.0254,
+		"mi-m": 1609.344,
+		// mass
+		"g-lb": 1/453.59237,
+		"g-oz": 1/28.349523125,
+		"lb-g": 453.59237,
+		"oz-g": 28.349523125,
 	}
 
-	// if input and output prefixes and units are equal
-	if(input_prefix==output_prefix && input_unit==output_unit) {
+	if(input_prefix === output_prefix && input_unit === output_unit) { // if input and output prefixes and units are equal
 		output=input
 	}
-	else {
-		if(input_unit==output_unit) {
-			output=(input*prefixNumber(input_prefix))/prefixNumber(output_prefix)
-		}
-		else {
-			output=(input*factors[key]*prefixNumber(input_prefix))/prefixNumber(output_prefix)
-		}
+	else if(input_unit === output_unit) { // if the units are equal but not prefixes
+		output=(input*prefixNumber(input_prefix))/prefixNumber(output_prefix)
+	}
+	else { // otherwise
+		output=(input*factors[key]*prefixNumber(input_prefix))/prefixNumber(output_prefix)
 	}
 
 	return output
@@ -119,6 +121,16 @@ document.getElementsByName("quantity").forEach((radio) => {
 			<option value="m">metres (m)</option>
 			<option value="mi">miles (mi)</option>
 		`
+		// mass units
+		const mass=`
+			<option value="select">select</option>
+			<option value="lgt">long tons</option>
+			<option value="g">grams (g)</option>
+			<option value="lb">pounds (lb)</option>
+			<option value="oz">ounces (oz)</option>
+			<option value="sht">short tons</option>
+			<option value="t">tonnes (t)</option>
+		`
 		// temperature units
 		const temp=`
 			<option value="select">select</option>
@@ -141,6 +153,14 @@ document.getElementsByName("quantity").forEach((radio) => {
 			output_prefix.value="none"
 			input_unit.innerHTML=length
 			output_unit.innerHTML=length
+		}
+		else if(quantity=="mass") {
+			input_prefix.innerHTML=decimal
+			output_prefix.innerHTML=decimal
+			input_prefix.value="none"
+			output_prefix.value="none"
+			input_unit.innerHTML=mass
+			output_unit.innerHTML=mass
 		}
 		else if(quantity=="temp") {
 			input_prefix.innerHTML=decimal
@@ -167,7 +187,7 @@ document.getElementById("input-unit").addEventListener("change", function() {
 
 // convert button
 document.getElementById("convert").addEventListener("click", function() {
-	let input=Number(document.getElementById("input").value)
+	let input=document.getElementById("input").value
 	const input_prefix=document.getElementById("input-prefix").value, output_prefix=document.getElementById("output-prefix").value
 	const input_unit=document.getElementById("input-unit").value, output_unit=document.getElementById("output-unit").value
 	let output=0, output2=0 // outputs
@@ -176,42 +196,47 @@ document.getElementById("convert").addEventListener("click", function() {
 	if(input==null) {
 		input=0
 	}
-
-	output=unitConvert(input, input_prefix, input_unit, output_prefix, output_unit)
-
-	// temperature units
-	// Celsius to Fahrenheit
-	if(input_unit=="celsius" && output_unit=="fahrenheit") {
-		output=(input*9/5)+32
-	}
-	// Celsius to Kelvin
-	else if(input_unit=="celsius" && output_unit=="kelvin") {
-		output=(input*100+27315)/100 // to avoid floating point issues
-	}
-
-	// Fahrenheit to Celsius
-	else if(input_unit=="fahrenheit" && output_unit=="celsius") {
-		output=(input-32)*5/9
-	}
-	// Fahrenheit to Kelvin
-	else if(input_unit=="fahrenheit" && output_unit=="kelvin") {
-		output=((input-32)*500/9+27315)/100
-	}
 	
-	// Kelvin to Celsius
-	else if(input_unit=="kelvin" && output_unit=="celsius") {
-		output=(input*100-27315)/100 // to avoid floating point issues
+	// for temperature conversion
+	if(quantity === "temp") {
+		if(input_unit=="celsius" && output_unit=="fahrenheit") {
+			output=(input*9/5)+32
+		}
+		// Celsius to Kelvin
+		else if(input_unit=="celsius" && output_unit=="kelvin") {
+			output=(input*100+27315)/100 // to avoid floating point issues
+		}
+		// Fahrenheit to Celsius
+		else if(input_unit=="fahrenheit" && output_unit=="celsius") {
+			output=(input-32)*5/9
+		}
+		// Fahrenheit to Kelvin
+		else if(input_unit=="fahrenheit" && output_unit=="kelvin") {
+			output=((input-32)*500/9+27315)/100
+		}
+		// Kelvin to Celsius
+		else if(input_unit=="kelvin" && output_unit=="celsius") {
+			output=(input*100-27315)/100 // to avoid floating point issues
+		}
+		// Kelvin to Fahrenheit
+		else if(input_unit=="kelvin" && output_unit=="fahrenheit") {
+			output=((input*100-27315)*9/500)+32
+		}
 	}
-	// Kelvin to Fahrenheit
-	else if(input_unit=="kelvin" && output_unit=="fahrenheit") {
-		output=((input*100-27315)*9/500)+32
+	else {
+		output=unitConvert(input, input_prefix, input_unit, output_prefix, output_unit)
 	}
 
-	if(output_unit=="b") {
+	if(output_unit === "b") {
 		output=Math.floor(output)
 	}
 
-	document.getElementById("output").value=output
+	if(output_prefix === "none") { // if there is no output prefix
+		document.getElementById("output").innerHTML=`Output: ${output} ${output_unit}`
+	}
+	else { // otherwise
+		document.getElementById("output").innerHTML=`Output: ${output} ${output_prefix}${output_unit}`
+	}
 
 	console.log("Input: " + input + " " + input_prefix + input_unit)
 	console.log("Output: " + output + " " + output_unit)
@@ -238,4 +263,33 @@ document.getElementById("clear").addEventListener("click", () => {
 
 	document.getElementById("input-unit").value="select"
 	document.getElementById("output-unit").value="select"
+})
+
+// dark and light theme
+document.getElementsByName("theme").forEach((radio) => {
+	radio.addEventListener("change", () => {
+		theme = radio.value
+		console.log("Theme: " + theme)
+
+		switch(theme) {
+			case "dark": // if theme is dark, select dark theme
+				document.querySelector("html").style.cssText = `
+					color-scheme: dark;
+					--background: linear-gradient(to bottom, black, #0B0B3B, #1C1C3A);
+					--button: darkgreen;
+					--foreground: #ededed;
+				`
+				break
+			case "light": // if theme is light, select light theme
+				document.querySelector("html").style.cssText = `
+					color-scheme: light;
+					--background: linear-gradient(to bottom, #87CEEB, #ADD8E6, white);
+					--button: lightgreen;
+					--foreground: black;"
+				`
+				break
+			default: // otherwise, select system default
+				document.querySelector("html").style.cssText = ""
+		}
+	})
 })

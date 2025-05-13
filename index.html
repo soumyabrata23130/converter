@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+		<title>Converter</title>
+		<link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="styles.css">
+	</head>
+	<body class="flex items-center justify-center">
+		<main class="text-center">
+			<h1 class="font-bold text-3xl">Converter</h1>
+			<!-- theme selector -->
+			<form class="card mx-auto mb-8 mt-4 px-2 py-3 rounded-lg" id="theme-card">
+				<fieldset class="flex gap-3 justify-center" id="theme-select">
+					<legend>Select theme:</legend>
+					<p>
+						<input type="radio" id="default" name="theme" value="default" checked>
+						<label for="default">System default</label>
+					</p>
+					<p>
+						<input type="radio" id="dark" name="theme" value="dark">
+						<label for="dark">Dark</label>
+					</p>
+					<p>
+						<input type="radio" id="light" name="theme" value="light">
+						<label for="light">Light</label>
+					</p>
+				</fieldset>
+			</form>
+			<!-- quantity selector -->
+			<form class="card mx-auto mb-8 mt-4 px-2 py-3 rounded-lg" id="quantity-card">
+				<fieldset class="flex gap-3 justify-center" id="quantity-select">
+					<legend>Select quantity:</legend>
+					<p>
+						<input type="radio" id="info" name="quantity" value="info">
+						<label for="info">Information</label>
+					</p>
+					<p>
+						<input type="radio" id="length" name="quantity" value="length">
+						<label for="length">Length</label>
+					</p>
+					<p>
+						<input type="radio" id="mass" name="quantity" value="mass">
+						<label for="mass">Mass</label>
+					</p>
+					<p>
+						<input type="radio" id="temp" name="quantity" value="temp">
+						<label for="temp">Temperature</label>
+					</p>
+				</fieldset>
+			</form>
+			<!-- converter card -->
+			<div class="card flex-column items-center mx-auto px-3 py-3 rounded-lg" id="converter-card">
+				<!-- input -->
+				<div>
+					<label for="input">Input:</label>
+					<input class="px-1 rounded-md" type="number" id="input" name="input" required><br>
+				</div>
+				<!-- input prefix and unit -->
+				<fieldset class="flex gap-4 justify-center">
+					<legend>From:</legend>
+					<p>
+						<label for="input-prefix">Prefix:</label>
+						<select class="border" id="input-prefix">
+							<option value='none'>none (10⁰)</option>
+						</select>
+					</p>
+					<p>
+						<label for="input-unit">Unit:</label>
+						<select class="border" id="input-unit">
+							<option value="select">Select</option>
+						</select>
+					</p>
+				</fieldset>
+				<!-- output prefix and unit -->
+				<fieldset class="flex gap-4 justify-center">
+					<legend>To:</legend>
+					<p>
+						<label for="output-prefix">Prefix:</label>
+						<select class="border" id="output-prefix">
+							<option value='none'>none (10⁰)</option>
+						</select>
+					</p>
+					<p>
+						<label for="output-unit">Unit:</label>
+						<select class="border" id="output-unit">
+							<option value="select">Select</option>
+						</select>
+					</p>
+				</fieldset>
+				<!-- buttons -->
+				<div class="flex justify-around py-1">
+					<button class="px-3 py-1 rounded-lg" type="submit" id="convert">Convert</button>
+					<button class="px-3 py-1 rounded-lg" type="submit" id="reverse">Reverse units</button>
+					<button class="px-3 py-1 rounded-lg" type="reset" id="clear">Clear</button>
+				</div>
+				<hr class="my-2">
+				<p id="output"></p>
+			</div>
+			<div class="mt-3 text-center text-sm">
+				<p>Copyright © 2025 Soumyabrata Bhattacharjee.</p>
+			</div>
+		</main>
+		<script src="script.js"></script>
+	</body>
+</html>
