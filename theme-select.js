@@ -17,7 +17,7 @@ document.getElementsByName("theme").forEach((radio) => {
 					color-scheme: light;
 					--background: linear-gradient(to bottom, #87CEEB, #ADD8E6, white);
 					--button: lightgreen;
-					--foreground: black;"
+					--foreground: black;
 				`
 				break
 			default: // otherwise, select system default
