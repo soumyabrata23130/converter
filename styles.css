@@ -52,6 +52,7 @@ input, select {
 
 select {
 	width: 8rem;
+	border-color: var(--foreground);
 }
 
 button {
